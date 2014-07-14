@@ -25,7 +25,24 @@ ShowToClient("Aviso","Comecando as atividades... ;)");
 ----------------------------------------------------------------------------------------------
 ----Funcoes
 ----------------------------------------------------------------------------------------------
-MAName = "Zamyad";
+lider = "Zamyad";
+
+----------------------------------------------------------------------------------------------
+--MA
+----------------------------------------------------------------------------------------------
+function MA()
+	PlayerList = GetPlayerList();
+	
+	for user in PlayerList.list do
+		if(user:GetName() == lider) then
+			if(GetTarget():IsMonster() == false) and (GetTarget():IsAlikeDeath() == false) then
+				Target(user);
+				--Sleep(200);
+				Command("/assist");
+			end;
+		end;
+	end;
+end;
 
 ----Reuso de Skills
 function ReusoSkills(IdSkill) --Ataques do Adventure
@@ -65,7 +82,7 @@ function NumeroDeFeridos()
 	
 	for user in PlayerList.list do
 		if(user:IsMyPartyMember() == true)then
-			if ((user:IsAlikeDeath() == true)) then
+			if ((user:GetHpPercent() <= 50)) then
 				cont = cont + 1;
 			end;
 		end;
@@ -108,10 +125,8 @@ end;
 ----Perde targer 
 ----------------------------------------------------------------------------------------------
 function LimparTarget()
-	local me = GetMe();
-	local MyTarget = GetTarget();
-	if (me ~= nil) and (not me:IsAlikeDeath()) and (MyTarget ~= nil) and ((MyTarget:IsMonster()) 
-			or not ((MyTarget:IsMyPartyMember()) or (MyTarget:IsMe()))) then
+	if (eu ~= nil) and (eu:IsAlikeDeath() == false) and (GetTarget() ~= nil) and ((GetTarget():IsMonster()) 
+			or not ((GetTarget():IsMyPartyMember()) or (GetTarget():IsMe()))) then
 		ClearTargets();
 		CancelTarget(false);
 		CancelTarget(false);
@@ -171,6 +186,9 @@ function Curar(usuario, tipo, porcentagem, skill)
 							Target(usuario);
 							UseSkillRaw(ReusoSkills(IdSkillPeloNome(skill)), false, false);
 							Sleep(500);
+						elseif(skill == "Rebirth")then
+							UseSkillRaw(ReusoSkills(IdSkillPeloNome(skill)), false, false);
+							Sleep(500);
 						end;
 					end;
 				end;
@@ -198,8 +216,11 @@ end;
 ----------------------------------------------------------------------------------------------
 ----Debuffs
 ----------------------------------------------------------------------------------------------
-function Debuffs(db)
-	
+function Debuffs(skill)
+	--if(GetTarget():GotBuff(IdSkillPeloNome(skill)) == false) and (GetTarget():IsAlikeDeath() == true)then
+	--	MA();
+	--	UseSkillRaw(ReusoSkills(IdSkillPeloNome(skill)), false, false);
+	--end;
 end;
 
 ----------------------------------------------------------------------------------------------
@@ -207,9 +228,9 @@ end;
 ----------------------------------------------------------------------------------------------
 function AHCuras()
 	PlayerList = GetPlayerList();
-	local cont = 0;
 	
 	for user in PlayerList.list do
+		LimparTarget();
 		if(user:IsMyPartyMember() == true)then
 			if(user:GetCpPercent() < 90)then
 				Curar(user, "cp", 75, "Panic Heal");
@@ -237,6 +258,19 @@ function AHCuras()
 				Curar(eu, "hp", 90, "Brilliant Heal");
 				Curar(eu, "hp", 80, "Sustain");
 				Curar(eu, "hp", 50, "Progrssive Heal");
+				Curar(eu, "hp", 80, "Fairy of Life");
+				
+				if((user:GetClass() ~= 150) and (user:GetClass() ~= 151))then
+					if(ReusoSkills(IdSkillPeloNome(skill)) ~= 0)then
+						if(user:GotBuff(IdSkillPeloNome("Fairy of Life")) == false)then
+							Curar(user, "hp", 80, "Fairy of Life");
+						end;
+					end;
+				end;
+			end;
+			
+			if(eu:GetMpPercent() < 90)then
+				Curar(eu, "mp", 75, "Rebirth");
 			end;
 			
 		end;
@@ -244,18 +278,40 @@ function AHCuras()
 end;
 
 function ACCuras()
+	PlayerList = GetPlayerList();
+	
+	for user in PlayerList.list do
+		LimparTarget();
+		if(user:IsMyPartyMember() == true)then
+			if(user:GetCpPercent() < 90)then
+				
+			end;
+			
+			if(user:GetHpPercent() < 90)then
+				if(NumeroDeFeridos() >3 )then
+					Curar(user, "hp", 40, "Miraculous Benediction");
+				end;
+			end;
+			
+			if(user:GetMpPercent() < 97)then
+				
+			end;
+			
+		end;
+	end;
 	AHCuras();
 end;
 
 function AESCuras()
+	LimparTarget();
 	AHCuras();
 end;
 
 function ASSCuras()
 	PlayerList = GetPlayerList();
-	local cont = 0;
 	
 	for user in PlayerList.list do
+		LimparTarget();
 		if(user:IsMyPartyMember() == true)then
 			if(user:GetCpPercent() < 90)then
 				
@@ -275,6 +331,8 @@ function ASSCuras()
 end;
 
 function AeoreCuras()
+	LimparTarget();
+	
 	if (eu:GetClass() == 146) then		-- AeoreHealer
 		AHCuras();
 	elseif (eu:GetClass() == 179) then	-- AeoreCardinal
@@ -290,6 +348,33 @@ end;
 --Defesa
 ----------------------------------------------------------------------------------------------
 function AHDefesa()
+	PlayerList = GetPlayerList();
+	
+	for user in PlayerList.list do
+		if(user:IsMyPartyMember() == true)then
+			if(eu:GetLevel() >= 87)then
+				if(user:GetHpPercent() < 70)then
+					UseSkillRaw(ReusoSkills(IdSkillPeloNome("Celestial Party Protection")), false, false); -- CelestialPartyProtection
+					Sleep(500);
+				end;
+			end;
+		end;
+	end;
+	
+	if(eu:GetHpPercent() < 70)then
+		UseSkillRaw(ReusoSkills(IdSkillPeloNome("Celestial Party Protection")), false, false); -- CelestialPartyProtection
+		Sleep(500);
+	end;
+				
+	if(eu:GetHpPercent() < 70)then
+		UseSkillRaw(ReusoSkills(IdSkillPeloNome("Disparition") and (ReusoSkills(IdSkillPeloNome("Celestial Party Protection")) == 0)), false, false); -- Disparition
+		Sleep(500);
+	end;
+	
+	if(eu:GetHpPercent() < 70) and (ReusoSkills(IdSkillPeloNome("Disparition")) == 0)then
+		UseSkillRaw(ReusoSkills(IdSkillPeloNome("Giant's Favor")), false, false); -- Giant'sFavor
+		Sleep(500);
+	end;
 	
 end;
 
@@ -323,6 +408,8 @@ end;
 --Buffs proprios
 ----------------------------------------------------------------------------------------------
 function AHBuffs()
+	PlayerList = GetPlayerList();
+	
 	if (eu:GotBuff(1939) == false) then
 		UseSkillRaw(1939, false, false); -- AeoreAura
 		Sleep(500);
@@ -332,37 +419,70 @@ function AHBuffs()
 		Sleep(500);
 	end;
 	if (eu:GotBuff(11826) == false) then
-		TargetRaw(eu:GetId());
+		Target(eu);
 		UseSkillRaw(ReusoSkills(11826), false, false); -- Emblem of Salvation
 		Sleep(500);
 		ClearTargets();
 		Sleep(500);
 	end;
 	
+	for user in PlayerList.list do
+		if(user:IsMyPartyMember() == true)then
+			if (user:GotBuff(IdSkillPeloNome("Noblesse Blessing")) == false) then
+				Target(user);
+				UseSkillRaw(ReusoSkills(IdSkillPeloNome("Noblesse Blessing")), false, false); -- NoblesseBlessing
+				Sleep(500);
+			end;
+			if (eu:GotBuff(IdSkillPeloNome("Noblesse Blessing")) == false) then
+				Target(eu);
+				UseSkillRaw(ReusoSkills(IdSkillPeloNome("Noblesse Blessing")), false, false); -- NoblesseBlessing
+				Sleep(500);
+			end;
+		end;
+	end;
+	
 end;
 
 function ACBuffs()
-	AHBuffs();
-	if (eu:GotBuff(11851) == false) then
-		UseSkillRaw(ReusoSkills(11851), false, false); -- DivinePrayer
-		Sleep(500);
+	PlayerList = GetPlayerList();
+	
+	for user in PlayerList.list do
+		if(user:IsMyPartyMember() == true)then
+			if (user:GotBuff(IdSkillPeloNome("Divine Prayer")) == false) then
+				UseSkillRaw(ReusoSkills(IdSkillPeloNome("Divine Prayer")), false, false); -- DivinePrayer
+				Sleep(500);
+			end;
+		end;
 	end;
+	AHBuffs();
 end;
 
 function AESBuffs()
-	AHBuffs();
-	if (eu:GotBuff(11854) == false) then
-		UseSkillRaw(ReusoSkills(11854), false, false); -- MassManaGain
-		Sleep(500);
+	PlayerList = GetPlayerList();
+	
+	for user in PlayerList.list do
+		if(user:IsMyPartyMember() == true)then
+			if (eu:GotBuff(IdSkillPeloNome("Mass Mana Gain")) == false) then
+				UseSkillRaw(ReusoSkills(IdSkillPeloNome("Mass Mana Gain")), false, false); -- MassManaGain
+				Sleep(500);
+			end;
+		end;
 	end;
+	AHBuffs();
 end;
 
 function ASSBuffs()
-	AHBuffs();
-	if (eu:GotBuff(11854) == false) then
-		UseSkillRaw(ReusoSkills(11854), false, false); -- MassManaGain
-		Sleep(500);
+	PlayerList = GetPlayerList();
+	
+	for user in PlayerList.list do
+		if(user:IsMyPartyMember() == true)then
+			if (user:GotBuff(IdSkillPeloNome("Mass Mana Gain")) == false) then
+				UseSkillRaw(ReusoSkills(IdSkillPeloNome("Mass Mana Gain")), false, false); -- MassManaGain
+				Sleep(500);
+			end;
+		end;
 	end;
+	AHBuffs();
 end;
 
 function AeoreBuffs()
@@ -386,12 +506,12 @@ function Ress()
 	PlayerList = GetPlayerList();
 	ResSkill = GetSkills():FindById(11784);
 	
-	if (GetMe():IsAlikeDeath() == true)then
+	if (eu:IsAlikeDeath() == true)then
 		ShowToClient("Aviso","Estou morto, esperando pelo res.");
 		Sleep(10000)
 		repeat
 			Sleep(1000);
-		until (GetMe():IsAlikeDeath() == false);
+		until (eu:IsAlikeDeath() == false);
 		ShowToClient("Aviso","Estou vivo denovo. ;)");
 	end;
 	
@@ -400,7 +520,7 @@ function Ress()
 			if (user:IsMyPartyMember()) and (user:IsAlikeDeath() == true)and(ResSkill ~= nil) and(ResSkill:CanBeUsed()) then
 				if((NumeroDeMortos() >= 3) and 
 				(ReusoSkills(IdSkillPeloNome("Party Resurrection")) ~= 0) and
-				(Distancia() <= 500)) then
+				(Distancia() <= 500) and (eu:GetLevel() >= 89)) then
 					UseSkillRaw(ReusoSkills(IdSkillPeloNome("Party Resurrection")), false, false);
 					Sleep(500);
 					ClearTargets();
@@ -426,14 +546,13 @@ end;
 ----Ataque
 ----------------------------------------------------------------------------------------------
 function AHAtk()
-	Debuffs(11777);	--MarkOfLumi
+	Debuffs("Mark of Lumi");	--MarkOfLumi
 	Sleep(500);
-	Debuffs(11780);	--DarkDevour
+	Debuffs("Dark Devour");	--DarkDevour
 	Sleep(500);
-	Debuffs(11781);	--DarkDevour
+	Debuffs("Dark Backfire");	--DarkBackfire
 	Sleep(500);
-	Debuffs(11769);	--DarckBackfire
-	Sleep(500);
+	
 end;
 
 function ACAtk()
@@ -466,9 +585,11 @@ end;
 ----Acao
 ----------------------------------------------------------------------------------------------
 function Acao()
+	--AeoreAtk();
 	AeoreCuras();
 	AeoreBuffs();
-	AeoreAtk();
+	AeoreDefesa();
+	--AeoreAtk();
 end;
 
 -----------------------------------------------------------------------------------------------------
@@ -477,7 +598,7 @@ end;
 function Main()
 	Ress();
 	Acao();
-	--ShowToClient("Aviso","num mortos "..IdSkillPeloNome("Blessed Resurrection"));
+	--ShowToClient("Aviso","Fairy of Life = "..IdSkillPeloNome("Fairy of Life"));
 end;
 
 -----------------------------------------------------------------------------------------------------
