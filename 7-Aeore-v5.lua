@@ -329,9 +329,10 @@ function AHCurasHP()
 			end;
 			
 			if(eu:GetHpPercent() < 90)then
+				Curar(eu, "hp", 50, "Panic Heal");
 				Curar(eu, "hp", 75, "Balance Heal");
 				Curar(eu, "hp", 90, "Brilliant Heal");
-				Curar(eu, "hp", 85, "Sustain");
+				Curar(eu, "hp", 90, "Sustain");
 				Curar(eu, "hp", 50, "Progressive Heal");
 				
 				if(ReusoSkills(IdSkillPeloNome("Fairy of Life")) ~= 0)then
@@ -356,7 +357,7 @@ function AHCurasHP()
 			end;
 		end;
 	end;
-	if(eu:GetHpPercent() < 60)then
+	if(eu:GetHpPercent() < 70)then
 		UseSkillRaw(ReusoSkills(IdSkillPeloNome("Summon Tree of Life")), false, false); -- CelestialPartyProtection
 		Sleep(500);
 	end;
