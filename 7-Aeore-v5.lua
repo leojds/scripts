@@ -80,7 +80,7 @@ function NumeroDeFeridos()
 	
 	for user in PlayerList.list do
 		if(user:IsMyPartyMember() == true)then
-			if ((user:GetHpPercent() <= 50)) then
+			if ((user:GetHpPercent() <= 60)) then
 				cont = cont + 1;
 			end;
 		end;
@@ -323,6 +323,11 @@ function AHCurasHP()
 				end;
 			end;
 			
+			if(NumeroDeFeridos() > 3)then
+				UseSkillRaw(ReusoSkills(IdSkillPeloNome("Summon Tree of Life")), false, false); -- CelestialPartyProtection
+				Sleep(500);
+			end;
+			
 			if(eu:GetHpPercent() < 90)then
 				Curar(eu, "hp", 75, "Balance Heal");
 				Curar(eu, "hp", 90, "Brilliant Heal");
@@ -350,6 +355,10 @@ function AHCurasHP()
 				Curar(eu, "hp", 85, "Fairy of Life");
 			end;
 		end;
+	end;
+	if(eu:GetHpPercent() < 60)then
+		UseSkillRaw(ReusoSkills(IdSkillPeloNome("Summon Tree of Life")), false, false); -- CelestialPartyProtection
+		Sleep(500);
 	end;
 end;
 
