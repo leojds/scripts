@@ -230,6 +230,8 @@ function LimparDebuffs(usuario)
 		IdSkillPeloNome("Stun"),
 		IdSkillPeloNome("Fairy Curse Poison"),
 		IdSkillPeloNome("Fairy Curse Gloom"),
+		IdSkillPeloNome("Throw Dagger"),
+		IdSkillPeloNome("Dark Paralysis"),
 		
 	}
 	
