@@ -220,6 +220,29 @@ function Distancia()
 end;
 
 ----------------------------------------------------------------------------------------------
+----LimparDebuffs
+----------------------------------------------------------------------------------------------
+function LimparDebuffs(usuario)
+	debuffList = {
+		IdSkillPeloNome("Sleep"),
+		IdSkillPeloNome("Fatal Sleep"),
+		IdSkillPeloNome("Mass Fatal Sleep"),
+		IdSkillPeloNome("Stun"),
+		IdSkillPeloNome("Fairy Curse Poison"),
+		IdSkillPeloNome("Fairy Curse Gloom"),
+		
+	}
+	
+	for i = 1, #debuffList do
+		if(usuario:GotBuff(debuffList[i]))then
+			Target(usuario);
+			UseSkillRaw(ReusoSkills(IdSkillPeloNome("Radiant Purg")), false, false);
+			Sleep(500);
+		end;
+	end;
+end;
+
+----------------------------------------------------------------------------------------------
 ----Debuffs
 ----------------------------------------------------------------------------------------------
 function Debuffs(skill)
@@ -427,8 +450,8 @@ function AHCurasMP()
 			
 		end;
 	end;
-	if(eu:GetMpPercent() < 20)then
-		Curar(eu, "mp", 15, "Rebirth");
+	if(eu:GetMpPercent() < 15)then
+		Curar(eu, "mp", 10, "Rebirth");
 	end;
 			
 end;
@@ -517,6 +540,7 @@ function AeoreCuras()
 	if(eu:GetMpPercent() < 20)then
 		AeoreCurasMP();
 	end;
+	LimparDebuffs(eu);
 	
 	for user in PlayerList.list do
 		if(user:IsMyPartyMember() == true)then
