@@ -28,6 +28,19 @@ ShowToClient("Aviso","Comecando as atividades... ;)");
 lider = "Ashisvangh";
 
 ----------------------------------------------------------------------------------------------
+--Lista de debuffs
+----------------------------------------------------------------------------------------------
+debuffList = {
+		IdSkillPeloNome("Sleep"), IdSkillPeloNome("Fatal Sleep"),
+		IdSkillPeloNome("Mass Fatal Sleep"), IdSkillPeloNome("Stun"),
+		IdSkillPeloNome("Fairy Curse Poison"), IdSkillPeloNome("Fairy Curse Gloom"),
+		IdSkillPeloNome("Throw Dagger"), IdSkillPeloNome("Dark Paralysis"),
+		IdSkillPeloNome("Poison"), IdSkillPeloNome("Deadly Poison"), 
+		
+	}
+	
+	
+----------------------------------------------------------------------------------------------
 --MA
 ----------------------------------------------------------------------------------------------
 function MA()
@@ -223,20 +236,8 @@ end;
 ----LimparDebuffs
 ----------------------------------------------------------------------------------------------
 function LimparDebuffs(usuario)
-	debuffList = {
-		IdSkillPeloNome("Sleep"),
-		IdSkillPeloNome("Fatal Sleep"),
-		IdSkillPeloNome("Mass Fatal Sleep"),
-		IdSkillPeloNome("Stun"),
-		IdSkillPeloNome("Fairy Curse Poison"),
-		IdSkillPeloNome("Fairy Curse Gloom"),
-		IdSkillPeloNome("Throw Dagger"),
-		IdSkillPeloNome("Dark Paralysis"),
-		
-	}
-	
 	for i = 1, #debuffList do
-		if(usuario:GotBuff(debuffList[i]))then
+		if(usuario:GotBuff(debuffList[i]) == true)then
 			Target(usuario);
 			UseSkillRaw(ReusoSkills(IdSkillPeloNome("Radiant Purg")), false, false);
 			Sleep(500);
