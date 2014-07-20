@@ -555,6 +555,7 @@ function AeoreCuras()
 			if(user:GetMpPercent() < 97)then
 				AeoreCurasMP();
 			end;
+			LimparDebuffs(user);
 			Ress();
 		end;
 	end;
