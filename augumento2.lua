@@ -187,7 +187,7 @@ else
 					break;
 				else
  
-					if (GetAugmentManager():KeepAugment(weapon.RefineryOp2) == true) or (GetAugmentManager():KeepAugment(weapon.RefineryOp1) == true) then
+					if (GetAugmentManager():KeepAugment(weapon.RefineryOp1) == true) then
 						ShowToClient("AUGMENT", "Congratulation! You have achieved a desired augment!")
 						AugStatus = 1;
 					else

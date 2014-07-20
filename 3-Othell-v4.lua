@@ -96,7 +96,6 @@ function ORAtk() --Ataques do Othell Rogue
 	Sleep(500);
 	UseSkillRaw(ReusoSkills(10510), false, false); -- Chain Blow
 	Sleep(500);
-	Combo();
 	
 	if(Eu:GetMpPercent() > MP)then	-- Reverse
 		UseSkillRaw(ReusoSkills(10511), false, false);
@@ -143,6 +142,7 @@ function ORAtk() --Ataques do Othell Rogue
 		end;
 		
 	end;
+	Combo();
 	
 end;
 
@@ -346,9 +346,13 @@ function Main()
 			Combo();
 			LimparTarget();
 			ClearTargets();
+		else
+			Command("/pickup");
+			Sleep(500);
 		end;
 	end;
 	LimparTarget();
+	
 end;
 
 -----------------------------------------------------------------------------------------------------
