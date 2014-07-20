@@ -533,6 +533,11 @@ function AHDefesa()
 		Sleep(500);
 	end;
 	
+	if(eu:GetHpPercent() < 70) and (ReusoSkills(IdSkillPeloNome("Disparition")) == 0) and (ReusoSkills(IdSkillPeloNome("Giant's Favor")) == 0)then
+		UseSkillRaw(ReusoSkills(IdSkillPeloNome("Crystal Regeneration")), false, false); -- Giant'sFavor
+		Sleep(500);
+	end;
+	
 end;
 
 function ACDefesa()
@@ -734,6 +739,20 @@ end;
 function Acao()
 	PlayerList = GetPlayerList();
 	
+	if(eu:GetCpPercent() < 90)then
+		AeoreCurasCP();
+	end;
+	
+	if(eu:GetHpPercent() < 90)then
+		AeoreCurasHP();
+	end;
+	
+	if(eu:GetMpPercent() < 20)then
+		AeoreCurasMP();
+	end;
+	AeoreBuffs();
+	AeoreDefesa();
+	
 	for user in PlayerList.list do
 		if(user:IsMyPartyMember() == true)then
 			if(user:GetCpPercent() < 90)then
@@ -747,22 +766,9 @@ function Acao()
 			if(user:GetMpPercent() < 97)then
 				AeoreCurasMP();
 			end;
+			Ress();
 		end;
 	end;
-	if(eu:GetCpPercent() < 90)then
-		AeoreCurasCP();
-	end;
-	
-	if(eu:GetHpPercent() < 90)then
-		AeoreCurasHP();
-	end;
-	
-	if(eu:GetMpPercent() < 20)then
-		AeoreCurasMP();
-	end;
-	Ress();
-	AeoreBuffs();
-	AeoreDefesa();
 	LimparTarget();
 		
 	--AeoreAtk();
