@@ -501,6 +501,43 @@ function AeoreCurasMP()
 end;
 
 ----------------------------------------------------------------------------------------------
+----AeoreCuras
+----------------------------------------------------------------------------------------------
+function AeoreCuras()
+	PlayerList = GetPlayerList();
+	
+	if(eu:GetCpPercent() < 90)then
+		AeoreCurasCP();
+	end;
+	
+	if(eu:GetHpPercent() < 90)then
+		AeoreCurasHP();
+	end;
+	
+	if(eu:GetMpPercent() < 20)then
+		AeoreCurasMP();
+	end;
+	
+	for user in PlayerList.list do
+		if(user:IsMyPartyMember() == true)then
+			if(user:GetCpPercent() < 90)then
+				AeoreCurasCP();
+			end;
+			
+			if(user:GetHpPercent() < 90)then
+				AeoreCurasHP();
+			end;
+			
+			if(user:GetMpPercent() < 97)then
+				AeoreCurasMP();
+			end;
+			Ress();
+		end;
+	end;
+	LimparTarget();
+end;
+
+----------------------------------------------------------------------------------------------
 --Defesa
 ----------------------------------------------------------------------------------------------
 function AHDefesa()
@@ -539,6 +576,7 @@ function AHDefesa()
 		Sleep(500);
 	end;
 	
+	AeoreCuras();
 end;
 
 function ACDefesa()
@@ -601,7 +639,7 @@ function AHBuffs()
 			end;
 		end;
 	end;
-	
+	AeoreCuras();
 end;
 
 function ACBuffs()
@@ -696,7 +734,7 @@ function Ress()
 			end;
 		end;
 	end;
-	
+	AeoreCuras();
 	Sleep(5000);
 end;
 
@@ -707,7 +745,7 @@ function AHAtk()
 	Debuffs("Mark of Lumi");	--MarkOfLumi
 	Debuffs("Dark Devour");		--DarkDevour
 	Debuffs("Dark Backfire");	--DarkBackfire
-	
+	AeoreCuras();
 end;
 
 function ACAtk()
@@ -738,38 +776,9 @@ end;
 ----Acao
 ----------------------------------------------------------------------------------------------
 function Acao()
-	PlayerList = GetPlayerList();
-	
-	if(eu:GetCpPercent() < 90)then
-		AeoreCurasCP();
-	end;
-	
-	if(eu:GetHpPercent() < 90)then
-		AeoreCurasHP();
-	end;
-	
-	if(eu:GetMpPercent() < 20)then
-		AeoreCurasMP();
-	end;
 	AeoreBuffs();
 	AeoreDefesa();
-	
-	for user in PlayerList.list do
-		if(user:IsMyPartyMember() == true)then
-			if(user:GetCpPercent() < 90)then
-				AeoreCurasCP();
-			end;
-			
-			if(user:GetHpPercent() < 90)then
-				AeoreCurasHP();
-			end;
-			
-			if(user:GetMpPercent() < 97)then
-				AeoreCurasMP();
-			end;
-			Ress();
-		end;
-	end;
+	AeoreCuras();
 	LimparTarget();
 		
 	--AeoreAtk();
