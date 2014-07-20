@@ -33,7 +33,7 @@ ShowToClient("Aviso","Comecando as atividades do dia... ;)");
 ----------------------------------------------------------------------------------------------
 lider = "Zamyad";
 Stance = "SS";
-TipoAtk = "S"; -- S-> Single; AOE-> Area;
+TipoAtk = "AOE"; -- S-> Single; AOE-> Area;
 AtivarSTHawk = "S"; --S->sim; N->nao
 ponteiroStance = "";
 

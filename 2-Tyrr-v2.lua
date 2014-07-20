@@ -44,7 +44,7 @@ ShowToClient("Aviso","Comecando as atividades do dia... ;)");
 ----------------------------------------------------------------------------------------------
 Toten = "HC";
 Spirit = "SS";
-TipoAtk = "S"; -- S-> Single; AOE-> Area;
+TipoAtk = "AOE"; -- S-> Single; AOE-> Area;
 
 function TBCry(tipos)
 	local tipo = tipos;

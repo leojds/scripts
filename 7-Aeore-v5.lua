@@ -162,7 +162,11 @@ function Curar(usuario, tipo, porcentagem, skill)
 						Sleep(500);
 					end;
 				end;
-			elseif(skill == "Balance Heal") then
+			elseif(skill == "Balance Heal") then	
+				UseSkillRaw(ReusoSkills(IdSkillPeloNome(skill)), false, false);
+				Sleep(500);
+			elseif(skill == "Fairy of Life") or (skill == "Sustain") then	--
+				Target(usuario);
 				UseSkillRaw(ReusoSkills(IdSkillPeloNome(skill)), false, false);
 				Sleep(500);
 			end;
@@ -248,6 +252,11 @@ function AHCurasCP()
 			
 		end;
 	end;
+	if(eu:GetCpPercent() < 90)then
+		Curar(eu, "cp", 75, "Panic Heal");
+		Curar(eu, "cp", 90, "Brilliant Heal");
+	end;
+			
 end;
 
 function ACCurasCP()
@@ -329,6 +338,19 @@ function AHCurasHP()
 			end;
 		end;
 	end;
+	if(eu:GetHpPercent() < 90)then
+		Curar(eu, "hp", 75, "Balance Heal");
+		Curar(eu, "hp", 90, "Brilliant Heal");
+		Curar(eu, "hp", 85, "Sustain");
+		Curar(eu, "hp", 50, "Progressive Heal");
+			
+		if(ReusoSkills(IdSkillPeloNome("Fairy of Life")) ~= 0)then
+			if(eu:GotBuff(IdSkillPeloNome("Fairy of Life")) == false)then
+				Curar(eu, "hp", 85, "Sustain");
+				Curar(eu, "hp", 85, "Fairy of Life");
+			end;
+		end;
+	end;
 end;
 
 function ACCurasHP()
@@ -386,7 +408,7 @@ function AHCurasMP()
 			end;
 			
 			if(eu:GetLevel() >= 91)then
-				Curar(eu, "mp", 85, "Brilliant Recharge");
+				Curar(user, "mp", 85, "Brilliant Recharge");
 			end;
 			
 			if(eu:GetMpPercent() < 20)then
@@ -395,6 +417,10 @@ function AHCurasMP()
 			
 		end;
 	end;
+	if(eu:GetMpPercent() < 20)then
+		Curar(eu, "mp", 15, "Rebirth");
+	end;
+			
 end;
 
 function ACCurasMP()
@@ -487,8 +513,10 @@ function AHDefesa()
 	end;
 				
 	if(eu:GetHpPercent() < 70)then
-		UseSkillRaw(ReusoSkills(IdSkillPeloNome("Disparition") and (ReusoSkills(IdSkillPeloNome("Celestial Party Protection")) == 0)), false, false); -- Disparition
-		Sleep(500);
+		if((ReusoSkills(IdSkillPeloNome("Celestial Party Protection")) == 0))then
+			UseSkillRaw(ReusoSkills(IdSkillPeloNome("Disparition")), false, false); -- Disparition
+			Sleep(500);
+		end;
 	end;
 	
 	if(eu:GetHpPercent() < 70) and (ReusoSkills(IdSkillPeloNome("Disparition")) == 0)then
@@ -698,24 +726,36 @@ function Acao()
 	PlayerList = GetPlayerList();
 	
 	for user in PlayerList.list do
-		LimparTarget();
 		if(user:IsMyPartyMember() == true)then
 			if(user:GetCpPercent() < 90)then
-				
+				AeoreCurasCP();
 			end;
 			
 			if(user:GetHpPercent() < 90)then
-				
+				AeoreCurasHP();
 			end;
 			
 			if(user:GetMpPercent() < 97)then
-				
+				AeoreCurasMP();
 			end;
 		end;
 	end;
-	AeoreBuffs();
+	if(eu:GetCpPercent() < 90)then
+		AeoreCurasCP();
+	end;
+	
+	if(eu:GetHpPercent() < 90)then
+		AeoreCurasHP();
+	end;
+	
+	if(eu:GetMpPercent() < 20)then
+		AeoreCurasMP();
+	end;
 	Ress();
+	AeoreBuffs();
 	AeoreDefesa();
+	LimparTarget();
+		
 	--AeoreAtk();
 end;
 
@@ -723,9 +763,10 @@ end;
 ---função principal
 -----------------------------------------------------------------------------------------------------
 function Main()
-	Ress();
+	--ShowToClient("Aviso","Disparition = "..IdSkillPeloNome("Disparition"));
+	--Ress();
 	Acao();
-	--ShowToClient("Aviso","Fairy of Life = "..IdSkillPeloNome("Fairy of Life"));
+	
 end;
 
 -----------------------------------------------------------------------------------------------------
