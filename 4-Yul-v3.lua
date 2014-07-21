@@ -493,6 +493,8 @@ function Main()
 			ClearTargets();
 		end;
 	end;
+	Command("/target Large Cocoon");
+	Command("/useskillforce multiple Arrow")
 end;
 
 -----------------------------------------------------------------------------------------------------
