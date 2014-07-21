@@ -27,18 +27,6 @@ ShowToClient("Aviso","Comecando as atividades... ;)");
 ----------------------------------------------------------------------------------------------
 lider = "Ashisvangh";
 
-----------------------------------------------------------------------------------------------
---Lista de debuffs
-----------------------------------------------------------------------------------------------
-debuffList = {
-		IdSkillPeloNome("Sleep"), IdSkillPeloNome("Fatal Sleep"),
-		IdSkillPeloNome("Mass Fatal Sleep"), IdSkillPeloNome("Stun"),
-		IdSkillPeloNome("Fairy Curse Poison"), IdSkillPeloNome("Fairy Curse Gloom"),
-		IdSkillPeloNome("Throw Dagger"), IdSkillPeloNome("Dark Paralysis"),
-		IdSkillPeloNome("Poison"), IdSkillPeloNome("Deadly Poison"), 
-		
-	}
-	
 	
 ----------------------------------------------------------------------------------------------
 --MA
@@ -232,6 +220,18 @@ function Distancia()
 	return GetMe():GetRangeTo(GetTarget());
 end;
 
+----------------------------------------------------------------------------------------------
+--Lista de debuffs
+----------------------------------------------------------------------------------------------
+debuffList = {
+		IdSkillPeloNome("Sleep"), IdSkillPeloNome("Fatal Sleep"),
+		IdSkillPeloNome("Mass Fatal Sleep"), IdSkillPeloNome("Stun"),
+		IdSkillPeloNome("Fairy Curse Poison"), IdSkillPeloNome("Fairy Curse Gloom"),
+		IdSkillPeloNome("Throw Dagger"), IdSkillPeloNome("Dark Paralysis"),
+		IdSkillPeloNome("Poison"), IdSkillPeloNome("Deadly Poison"), 
+		
+	}
+	
 ----------------------------------------------------------------------------------------------
 ----LimparDebuffs
 ----------------------------------------------------------------------------------------------
@@ -543,7 +543,7 @@ function AeoreCuras()
 	if(eu:GetMpPercent() < 20)then
 		AeoreCurasMP();
 	end;
-	LimparDebuffs(eu);
+	--LimparDebuffs(eu);
 	
 	for user in PlayerList.list do
 		if(user:IsMyPartyMember() == true)then
@@ -558,8 +558,8 @@ function AeoreCuras()
 			if(user:GetMpPercent() < 97)then
 				AeoreCurasMP();
 			end;
-			LimparDebuffs(user);
-			Ress();
+			--LimparDebuffs(user);
+			
 		end;
 	end;
 	LimparTarget();
@@ -804,6 +804,7 @@ end;
 ----Acao
 ----------------------------------------------------------------------------------------------
 function Acao()
+	Ress();
 	AeoreBuffs();
 	AeoreDefesa();
 	AeoreCuras();
